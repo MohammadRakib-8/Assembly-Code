@@ -1,0 +1,65 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+     STR DB "USING CASE////ENTER A NUMBER:$" 
+     STT DB 0AH,0DH, "PRINT FOR POSITIVE ENTRED NUMBER:$" 
+     SOO DB 0AH,0DH, "PRINT FOR NEGATIVE ENTRED NUMBER:$"
+     SKK DB 0AH,0DH, "PRINT FOR ENTRED ZERO:$"  
+.CODE                    
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV AH,9
+    LEA DX,STR
+    INT 21H
+    
+    MOV AH,1
+    INT 21H
+    MOV BH,AL
+    
+    SUB BH,48 ;CONVERT ASCII TO INTEGER OF INPUT FOR COMPARING THE NUMERIC VALUE
+    
+    CMP BH,0
+    
+    JE ZERO
+    JL NEGATIVE
+    JG POSITIVE
+    
+    ZERO: 
+    
+    MOV AH,9
+    LEA DX,SKK
+    INT 21H
+    MOV AH,2
+    MOV DL,'0'
+    INT 21H
+    JMP END_CASE
+    
+    NEGATIVE: 
+    MOV AH,9
+    LEA DX,SOO
+    INT 21H
+    MOV AH,2
+    MOV DL,'-'
+    INT 21H  
+    MOV DL,'1' 
+    INT 21H
+    JMP END_CASE
+    
+    POSITIVE:
+    MOV AH,9
+    LEA DX,STT
+    INT 21H
+    MOV AH,2
+    MOV DL,'1'
+    INT 21H
+    JMP END_CASE
+    
+    END_CASE:
+    MOV AH,4CH
+    INT 21H
+    
+    MAIN ENDP
+END MAIN

@@ -1,0 +1,34 @@
+MODEL SMALL
+.STACK 100H
+.DATA
+STR DB "ALL ASCII VALUE PRINTED USING JZ AND JMP :$"
+.CODE
+MAIN PROC
+    MOV AX,@DATA 
+    MOV DS,AX
+    
+    MOV AH,9
+    LEA DX,STR
+    INT 21H
+    
+    MOV CX,256
+    
+    MOV AH,2
+    MOV DL,0
+    
+    
+    START_LOOP:
+    INT 21H 
+    INC DL
+    DEC CX
+    
+       JZ END_LOOP
+       JMP START_lOOP
+    
+    END_LOOP:
+    
+    MOV AH,4CH
+    INT 21H 
+      
+    MAIN ENDP
+END MAIN
